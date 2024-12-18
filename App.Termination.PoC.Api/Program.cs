@@ -13,8 +13,6 @@ builder.Services
     .AddScoped<EnvironmentService>()
     .AddSingleton<GuidService>();
 
-builder.Host.ConfigureHostOptions(opts => opts.ShutdownTimeout = TimeSpan.FromSeconds(20));
-
 var app = builder.Build();
 
 app.Lifetime.ApplicationStopping.Register(() =>

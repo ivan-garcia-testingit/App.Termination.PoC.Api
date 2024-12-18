@@ -5,13 +5,11 @@ namespace App.Termination.PoC.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class OperationController(IHostApplicationLifetime _hostLifetime, ILogger<OperationController> _logger, OperationService _operationService, GuidService _guidService, EnvironmentService _environmentService) : ControllerBase
+public class OperationController(ILogger<OperationController> _logger, OperationService _operationService, GuidService _guidService, EnvironmentService _environmentService) : ControllerBase
 {
     [HttpPost("long")]
-    public async Task<IActionResult> LongOperation(CancellationToken requestCt)
+    public async Task<IActionResult> LongOperation()
     {
-        var effectiveCt = CancellationTokenSource.CreateLinkedTokenSource(requestCt, _hostLifetime.ApplicationStopping).Token;
-
         // creates a guid for the request
         var guid = Guid.NewGuid();
         _logger.LogInformation("({guid}) [OperationController.LongOperation] Received a request", guid);
