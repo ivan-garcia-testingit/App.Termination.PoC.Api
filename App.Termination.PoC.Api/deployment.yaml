@@ -1,0 +1,36 @@
+﻿---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: apptermpocapi-dp
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: appterminationpocapi
+    spec:
+      containers:
+      - name: appterminationpocapi
+        image: ivangarciatestingit/appterminationpocapi-img:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_URLS
+          value: http://*:8080
+  selector:
+    matchLabels:
+      app: appterminationpocapi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apptermpocapi-lb
+spec:
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 8080
+  selector:
+    app: appterminationpocapi
