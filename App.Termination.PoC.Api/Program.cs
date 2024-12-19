@@ -19,12 +19,14 @@ app.Lifetime.ApplicationStopping.Register(() =>
 {
     using var scope = app.Services.CreateScope();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    logger.LogInformation("[App.Termination.PoC.Api_ApplicationStopping] Waiting for 15 seconds to stop traffic");
-    Thread.Sleep(15000);
-    var guids = scope.ServiceProvider.GetRequiredService<GuidService>();
-    logger.LogInformation("[App.Termination.PoC.Api_ApplicationStopping] Waiting for all tasks to finish");
-    guids.WaitForAllGuids().Wait();
-    logger.LogInformation("[App.Termination.PoC.Api_ApplicationStopping] Finished waiting for all tasks");
+
+    var seconds = 25;
+    do
+    {
+        logger.LogInformation("[App.Termination.PoC.Api_ApplicationStopping] Waiting for {seconds} seconds to stop traffic", seconds);
+        Thread.Sleep(1000);
+    }
+    while (--seconds > 0);
 });
 
 app.Lifetime.ApplicationStopped.Register(() =>

@@ -13,11 +13,16 @@ spec:
       containers:
       - name: appterminationpocapi
         image: ivangarciatestingit/appterminationpocapi-img:latest
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sleep", "90"]
         ports:
         - containerPort: 8080
         env:
         - name: ASPNETCORE_URLS
           value: http://*:8080
+      terminationGracePeriodSeconds: 120
   selector:
     matchLabels:
       app: appterminationpocapi
